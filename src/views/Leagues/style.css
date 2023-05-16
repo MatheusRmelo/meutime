@@ -1,0 +1,37 @@
+.leagues-area{
+    width: 90%;
+    height: 90%;
+    
+    background-color: var(--color-secondary);
+    padding: 24px;
+}
+
+.leagues-area .header {
+    display: flex;
+
+    width: 100%;
+    height: 10%;
+
+    gap: 16px;
+}
+.leagues-area .header > input {
+    width: 80%;
+}
+.leagues-area .header > button{
+    width: 20%;
+    height: 60px;
+}
+.leagues-area .header > select{
+    width: 20%;
+}
+
+.leagues-area .content {
+    display: flex;
+    flex-wrap: wrap;
+
+    flex: 1;
+    height: 90%;
+    overflow: auto;
+
+    gap: 16px;
+}

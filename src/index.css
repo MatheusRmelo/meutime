@@ -1,0 +1,31 @@
+@import url('//fonts.cdnfonts.com/css/rawline');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  font-family: 'Rawline', sans-serif;
+}
+
+:root {
+  --color-dominant: #151F2B;
+  --color-secondary: #1E2733;
+  --color-highlight: #45CB85;
+  --color-disabled: rgba(201, 199, 199, 0.103);
+
+  --color-highlight-hover: #45cb868c;
+
+  --color-text-normal: #FFFFFF;
+  --color-text-light: #CFCFCF;
+  --color-text-ultralight: rgba(207, 207, 207, 0.69);
+  --color-text-button: #FFFFFF;
+  --color-text-disabled: #4b4b4b;
+
+  --color-border: #c4c4c4;
+}
+
+body {
+  background-color: var(--color-dominant);
+}

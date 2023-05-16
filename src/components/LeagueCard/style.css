@@ -1,0 +1,29 @@
+.league-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    width: 160px;
+    height: 160px;
+
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+
+    cursor: pointer;
+}
+.league-card:hover{
+    opacity: 0.6;
+}
+.league-card > img {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+}
+.league-card > .title {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8px;
+}

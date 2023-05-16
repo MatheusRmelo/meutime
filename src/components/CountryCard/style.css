@@ -1,0 +1,29 @@
+.country-card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    width: 160px;
+    height: 160px;
+
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+
+    cursor: pointer;
+}
+.country-card:hover{
+    opacity: 0.6;
+}
+.country-card > img {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+}
+.country-card > .title {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8px;
+}
