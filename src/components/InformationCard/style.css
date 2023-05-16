@@ -1,0 +1,20 @@
+.information-card{
+    display: flex;
+    flex-direction: column;
+
+    width: 300px;
+    height: 120px;
+
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+}
+.information-card > .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.information-card > .value {
+    font-size: 16px;
+    margin-top: 8px;
+}
