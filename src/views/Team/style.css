@@ -45,3 +45,22 @@
     flex-direction: column;
     gap: 16px;
 }
+
+.chart-area {
+    flex: 1;
+
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+@media screen and (max-width: 1200px) {
+    .team-area .content {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .chart-area {
+        width: 100%;
+    }
+}

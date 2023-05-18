@@ -43,7 +43,7 @@ export default function Teams(){
                     loading?
                     <Loading />:
                     <div className="content">
-                        {teams.map((team)=><ItemCard image={team.logo} name={team.name} />)}
+                        {teams.map((team)=><ItemCard key={team.id} image={team.logo} name={team.name} />)}
                     </div>
                 }
             </section>

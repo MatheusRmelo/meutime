@@ -89,15 +89,14 @@ export default class ClientAPI {
                 ...result.data.response,
                 minuteGoals: []
             }
-            console.log(result.data.response.goals.for.minute);
-            for(var element in Object.keys(result.data.response.goals.for.minute)){
+            Object.keys(result.data.response.goals.for.minute).forEach((element)=>{
                 statistics.minuteGoals.push({
                     minute: element,
                     percentage: result.data.response.goals.for.minute[element].percentage,
                     total: result.data.response.goals.for.minute[element].total,
-                })
-            }
-            return result.data.response as IStatistics;
+                });
+            });
+            return statistics as IStatistics;
         }catch(e){
             console.log(e);
             throw new DOMException("Failed server");
