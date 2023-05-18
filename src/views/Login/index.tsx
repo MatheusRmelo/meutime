@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 import Input from '../../components/Input';
 import './style.css';
 import Button from '../../components/Button';
 import ClientAPI from '../../utils/client.api';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateApiKey } from '../../store/actions';
 
 export default function Login(){
     const navigate = useNavigate();
+    const dispatch: Dispatch<any> = useDispatch();
+
     const [key, setKey] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -16,7 +20,8 @@ export default function Login(){
             var client = new ClientAPI(key);
             var result = await client.checkKey();
             if(result){
-                navigate('countries');
+                dispatch(updateApiKey(key));
+                navigate('/countries');
             }else{
                 alert('Invalid Key');
             }

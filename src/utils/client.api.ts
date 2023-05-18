@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import ICountry from "../interfaces/ICountry";
 import ILeague from "../interfaces/ILeague";
 import ILeagueResponse from "../interfaces/response/ILeagueResponse";
@@ -22,16 +22,15 @@ export default class ClientAPI {
     }
 
     public async checkKey() : Promise<boolean> {
-        return true;
-        // try {
-        //     await this.client.get('timezone');
-        //     return true;
-        // }catch(e){
-        //     if(e instanceof AxiosError){
-        //         if(e.response?.status == 401 || e.response?.status == 403) return false;
-        //     }
-        //     throw new DOMException("Failed server");
-        // }
+        try {
+            await this.client.get('timezone');
+            return true;
+        }catch(e){
+            if(e instanceof AxiosError){
+                if(e.response?.status == 401 || e.response?.status == 403) return false;
+            }
+            throw new DOMException("Failed server");
+        }
     }
 
     public async getCountries() : Promise<ICountry[]>{

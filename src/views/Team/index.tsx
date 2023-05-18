@@ -10,8 +10,14 @@ import IStatistics from '../../interfaces/IStatistics';
 import LineupCard from '../../components/LineupCard';
 import InformationCard from '../../components/InformationCard';
 import Chart from 'react-google-charts';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/type';
 
-export default function Teams(){
+export default function Team(){
+    const state = useSelector((state: AppState) => state);
+    const navigate = useNavigate();
+
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState<IPlayer[]>([]);
     const [statistics, setStatistics] = useState<IStatistics>();
@@ -26,22 +32,25 @@ export default function Teams(){
                 element.total ?? 0
             ]);
         });
-        console.log(result);
         return result;
     }, [statistics]);
 
     useEffect(()=>{
-        getData();
+        if(state.team == null || state.league == null || state.season == null){
+            navigate('/teams');
+        }else{
+            getData();
+        }
     }, []);
 
     const getData = async () => {
         setLoading(true);
         try {
-            var client = new ClientAPI("");
-            setPlayers(await client.getPlayers({id: 33, name: '', logo: '',code: null,country: '',founded: 0, national: false}, 2020));
-            setStatistics(await client.getStatistics(39, 33, 2020));
+            var client = new ClientAPI(state.key);
+            setPlayers(await client.getPlayers(state.team!, state.season!));
+            setStatistics(await client.getStatistics(state.league!.id, state.team!.id, state.season!));
         }catch(e){
-            console.log(e);
+            navigate('/');
         }finally{
             setLoading(false);
         }
@@ -56,12 +65,12 @@ export default function Teams(){
                     <div className="content">
                         <ListCard title='Jogadores'>
                             {
-                                players.map((player)=><PlayerCard player={player}/>)
+                                players.map((player)=><PlayerCard key={player.id} player={player}/>)
                             }
                         </ListCard>
                         <ListCard title={`${statistics!.lineups.length > 0 ? 'Formações' : 'Formação'} mais ${statistics!.lineups.length > 0 ? 'usadas' : 'usada'}`}>
                             {
-                                statistics!.lineups.map((lineup)=><LineupCard lineup={lineup}/>)
+                                statistics!.lineups.map((lineup, index)=><LineupCard key={index} lineup={lineup}/>)
                             }
                         </ListCard>
                         <div className="games">
@@ -80,10 +89,6 @@ export default function Teams(){
                             <InformationCard 
                                 title='Empates'
                                 value={statistics!.fixtures.draws.total.toString()}
-                            />
-                            <InformationCard 
-                                title='Empates'
-                                value={statistics!.minuteGoals[0].percentage}
                             />
                         </div>
                         <div className="chart-area">

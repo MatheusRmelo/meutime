@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Container from '../../components/Container';
 import Input from '../../components/Input';
@@ -7,27 +7,44 @@ import ClientAPI from '../../utils/client.api';
 import Loading from '../../components/Loading';
 import ITeam from '../../interfaces/ITeam';
 import ItemCard from '../../components/ItemCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../store/type';
+import { useNavigate } from 'react-router-dom';
+import { updateTeam } from '../../store/actions';
 
 export default function Teams(){
+    const state = useSelector((state: AppState) => state);
+    const dispatch: Dispatch<any> = useDispatch();
+    const navigate = useNavigate();
+    
     const [search, setSearch] = useState("");
     const [teams, setTeams] = useState<ITeam[]>([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
-        getTeams();
+        if(state.league == null){
+            navigate('/leagues');
+        }else{
+            getTeams();
+        }
     }, []);
 
     const getTeams = async () => {
         setLoading(true);
         try {
-            var client = new ClientAPI("");
-            var result = await client.getTeams({id: 522, name: '', logo: '', type: ''}, 2023);
+            var client = new ClientAPI(state.key);
+            var result = await client.getTeams(state.league!, state.season!);
             setTeams(result);
         }catch(e){
-            console.log(e);
+            navigate('/');
         }finally{
             setLoading(false);
         }
+    }
+
+    const handleClickTeam = (team: ITeam) => {
+        dispatch(updateTeam(team));
+        navigate('/team');
     }
 
     return (
@@ -43,7 +60,11 @@ export default function Teams(){
                     loading?
                     <Loading />:
                     <div className="content">
-                        {teams.map((team)=><ItemCard key={team.id} image={team.logo} name={team.name} />)}
+                        {teams.map((team)=>(
+                            <ItemCard 
+                                key={team.id} image={team.logo} name={team.name}
+                                onClick={()=>handleClickTeam(team)}/>
+                        ))}
                     </div>
                 }
             </section>
