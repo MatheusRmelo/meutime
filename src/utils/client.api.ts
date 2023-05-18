@@ -42,6 +42,15 @@ export default class ClientAPI {
         }
     }
 
+    public async getSeasons() : Promise<number[]>{
+        try {
+            var result = await this.client.get('leagues/seasons');
+            return result.data.response;
+        }catch(e){
+            throw new DOMException("Failed server");
+        }
+    }
+
     public async getLeagues(country: ICountry, season: number) : Promise<ILeague[]>{
         try {
             var result = await this.client.get(`leagues?code=${country.code}&season=${season}`);

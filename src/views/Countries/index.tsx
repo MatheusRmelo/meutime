@@ -1,9 +1,9 @@
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useMemo, useState } from 'react';
 import Button from '../../components/Button';
 import Container from '../../components/Container';
 import Input from '../../components/Input';
 import './style.css';
-import Select from '../../components/Select';
+import Select, { ISelectOption } from '../../components/Select';
 import CountryCard from '../../components/CountryCard';
 import ICountry from '../../interfaces/ICountry';
 import ClientAPI from '../../utils/client.api';
@@ -19,9 +19,14 @@ export default function Countries(){
     const dispatch: Dispatch<any> = useDispatch();
 
     const [search, setSearch] = useState("");
-    const [season, setSeason] = useState("2023");
+    const [season, setSeason] = useState("");
+    const [seasons, setSeasons] = useState<number[]>([]);
     const [countries, setCountries] = useState<ICountry[]>([]);
     const [loading, setLoading] = useState(true);
+    const optionsSeason = useMemo<ISelectOption[]>(()=>{
+        let currentYear = new Date().getFullYear();
+        return seasons.sort((a, b)=>a == currentYear ? 1 : b == currentYear ? -1 : 1).map((element)=>{return {name: element.toString(), value: element.toString()}});
+    }, [seasons]);
 
     useEffect(()=>{
         if(!apiKey){
@@ -36,6 +41,7 @@ export default function Countries(){
         try {
             var client = new ClientAPI(apiKey);
             var result = await client.getCountries();
+            setSeasons(await client.getSeasons());
             setCountries(result);
         }catch(e){
             navigate('/');
@@ -58,10 +64,7 @@ export default function Countries(){
                         Pesquisar
                     </Button>
                     <Select dominant value={season} 
-                        options={[
-                            {name: "2023", value: "2023"},
-                            {name: "2022", value: "2022"}
-                        ]}
+                        options={optionsSeason}
                         onChange={(value)=>setSeason(value)}/>
                 </div>
                 {

@@ -2,12 +2,12 @@ import './style.css';
 
 interface Props {
     value: string,
-    options: SelectOption[],
+    options: ISelectOption[],
     dominant?: boolean,
     onChange: (value: string) => void
 }
 
-interface SelectOption {
+export interface ISelectOption {
     name: string,
     value: string,
 }
