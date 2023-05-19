@@ -11,7 +11,7 @@ export default function LineupCard({ lineup } : Props){
                 {lineup.formation}
             </h5>
             <small className="details">
-                {lineup.played} vezes
+                {lineup.played} {lineup.played == 1 ? 'vez' : 'vezes'}
             </small>
         </div>
     );
