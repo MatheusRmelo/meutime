@@ -42,6 +42,15 @@ export default class ClientAPI {
         }
     }
 
+    public async searchCountry(search: string) : Promise<ICountry[]>{
+        try {
+            var result = await this.client.get(`countries?search=${search}`);
+            return result.data.response;
+        }catch(e){
+            throw new DOMException("Failed server");
+        }
+    }
+
     public async getSeasons() : Promise<number[]>{
         try {
             var result = await this.client.get('leagues/seasons');
@@ -54,6 +63,19 @@ export default class ClientAPI {
     public async getLeagues(country: ICountry, season: number) : Promise<ILeague[]>{
         try {
             var result = await this.client.get(`leagues?code=${country.code}&season=${season}`);
+            let leagues: ILeague[] = [];
+            (result.data.response as ILeagueResponse[]).forEach((element)=>{
+                leagues.push(element.league);
+            });
+            return leagues;
+        }catch(e){
+            throw new DOMException("Failed server");
+        }
+    }
+
+    public async searchLeague(country: ICountry, season: number, search: string) : Promise<ILeague[]>{
+        try {
+            var result = await this.client.get(`leagues?code=${country.code}&season=${season}&search=${search}`);
             let leagues: ILeague[] = [];
             (result.data.response as ILeagueResponse[]).forEach((element)=>{
                 leagues.push(element.league);

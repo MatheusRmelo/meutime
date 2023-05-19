@@ -4,6 +4,9 @@
     
     background-color: var(--color-secondary);
     padding: 24px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .teams-area .header {
@@ -15,10 +18,11 @@
     gap: 16px;
 }
 .teams-area .header > input {
-    width: 80%;
+    flex: 1;
 }
 .teams-area .header > button{
     width: 20%;
+    min-width: 120px;
     height: 60px;
 }
 .teams-area .header > select{
@@ -32,8 +36,19 @@
     flex-wrap: wrap;
 
     flex: 1;
-    height: 90%;
     overflow: auto;
 
     gap: 16px;
+    margin-top: 32px;
+}
+
+@media screen and (max-width: 1200px) {
+    .teams-area .header > .input {
+        width: 80%;
+    }
+    .teams-area .header > button{
+        width: 20%;
+        min-width: 120px;
+        height: 60px;
+    }
 }

@@ -12,6 +12,7 @@ import { AppState } from '../../store/type';
 import { useNavigate } from 'react-router-dom';
 import { updateLeague } from '../../store/actions';
 
+let timer:any;
 export default function Leagues(){
     const state = useSelector((state: AppState) => state);
     const dispatch: Dispatch<any> = useDispatch();
@@ -20,6 +21,13 @@ export default function Leagues(){
     const [search, setSearch] = useState("");
     const [leagues, setLeagues] = useState<ILeague[]>([]);
     const [loading, setLoading] = useState(false);
+
+    useEffect(()=>{
+        if(timer){
+            clearTimeout(timer);
+        }
+        timer = setTimeout(handleSearch, 500)
+    }, [search]);
 
     useEffect(()=>{
         if(state.country == null || state.season == null){
@@ -45,6 +53,18 @@ export default function Leagues(){
     const handleClickLeague = (league: ILeague) => {
         dispatch(updateLeague(league));
         navigate('/teams');
+    }
+
+    const handleSearch = async () => {
+        setLoading(true);
+        try {
+            var client = new ClientAPI(state.key);
+            setLeagues(await client.searchLeague(state.country!, state.season!, search));
+        }catch(e){
+            navigate('/');
+        }finally{
+            setLoading(false);
+        }
     }
 
     return (

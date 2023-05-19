@@ -13,6 +13,7 @@ import { AppState } from '../../store/type';
 import { useNavigate } from 'react-router-dom';
 import { updateSeasonAndCountry } from '../../store/actions';
 
+let timer: any;
 export default function Countries(){
     const apiKey: string = useSelector((state: AppState) => state.key);
     const navigate = useNavigate();
@@ -24,9 +25,15 @@ export default function Countries(){
     const [countries, setCountries] = useState<ICountry[]>([]);
     const [loading, setLoading] = useState(true);
     const optionsSeason = useMemo<ISelectOption[]>(()=>{
-        let currentYear = new Date().getFullYear();
-        return seasons.sort((a, b)=>a == currentYear ? 1 : b == currentYear ? -1 : 1).map((element)=>{return {name: element.toString(), value: element.toString()}});
+        return seasons.map((element)=>{return {name: element.toString(), value: element.toString()}});
     }, [seasons]);
+
+    useEffect(()=>{
+        if(timer){
+            clearTimeout(timer);
+        }
+        timer = setTimeout(handleSearch, 500)
+    }, [search]);
 
     useEffect(()=>{
         if(!apiKey){
@@ -41,7 +48,12 @@ export default function Countries(){
         try {
             var client = new ClientAPI(apiKey);
             var result = await client.getCountries();
-            setSeasons(await client.getSeasons());
+            let seasons = await client.getSeasons();
+            setSeasons(seasons);
+            let date = new Date();
+            if(seasons.find((element)=>element == date.getFullYear())){
+                setSeason(date.getFullYear().toString());
+            }
             setCountries(result);
         }catch(e){
             navigate('/');
@@ -53,6 +65,19 @@ export default function Countries(){
     const handleClickCountry = (country: ICountry) => {
         dispatch(updateSeasonAndCountry(country, parseInt(season)));
         navigate('/leagues');
+    }
+
+    const handleSearch = async () => {
+        setLoading(true);
+        try {
+            var client = new ClientAPI(apiKey);
+            var result = await client.searchCountry(search);
+            setCountries(result);
+        }catch(e){
+            navigate('/');
+        }finally{
+            setLoading(false);
+        }
     }
 
     return (

@@ -18,15 +18,17 @@
 
     gap: 16px;
 }
-.countries-area .header > input {
+.countries-area .header > .input {
     flex: 1;
 }
 .countries-area .header > button{
     width: 20%;
+    min-width: 200px;
     height: 60px;
 }
 .countries-area .header > select{
     width: 20%;
+    min-width: 200px;
 }
 
 .countries-area .content {
@@ -38,4 +40,19 @@
 
     gap: 16px;
     margin-top: 32px;
+}
+
+@media screen and (max-width: 1200px) {
+    .countries-area .header > .input {
+        width: 80%;
+    }
+    .countries-area .header > button{
+        width: 20%;
+        min-width: 120px;
+        height: 60px;
+    }
+    .countries-area .header > select{
+        width: 100%;
+        min-width: 200px;
+    }
 }
