@@ -70,3 +70,15 @@
 .login-area > .form-area > form > button {
     margin-top: 16px;
 }
+
+@media screen and (max-width: 1200px) {
+    .login-area > .banner{
+        display: none;
+    }
+    .login-area > .form-area > form {
+        width: 80%;
+    }
+    .login-area > .form-area > form > h1 {
+        font-size: 16px;
+    }
+}

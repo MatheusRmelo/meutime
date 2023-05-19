@@ -4,18 +4,22 @@
     
     background-color: var(--color-secondary);
     padding: 24px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .countries-area .header {
     display: flex;
+    flex-wrap: wrap;
 
     width: 100%;
-    height: 10%;
+    height: auto;
 
     gap: 16px;
 }
 .countries-area .header > input {
-    width: 80%;
+    flex: 1;
 }
 .countries-area .header > button{
     width: 20%;
@@ -30,8 +34,8 @@
     flex-wrap: wrap;
 
     flex: 1;
-    height: 90%;
     overflow: auto;
 
     gap: 16px;
+    margin-top: 32px;
 }
