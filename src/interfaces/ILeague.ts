@@ -3,4 +3,6 @@ export default interface ILeague {
     name: string,
     type: string,
     logo: string,
+
+    hidden?: boolean,
 }

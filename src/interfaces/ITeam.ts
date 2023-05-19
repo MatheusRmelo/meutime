@@ -6,4 +6,6 @@ export default interface ITeam {
     founded: number|null,
     national: boolean,
     logo: string,
+
+    hidden?: boolean
 }

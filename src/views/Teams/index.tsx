@@ -47,11 +47,19 @@ export default function Teams(){
         navigate('/team');
     }
 
+    const handleSearch = (value: string) => {
+        let newTeams = teams.map((element)=>{return {
+            ...element, hidden: value == "" ? false : !element.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+        }});
+        setTeams(newTeams);
+        setSearch(value);
+    }
+
     return (
         <Container>
             <section className="teams-area">
                 <div className="header">
-                    <Input label='Pesquisa' dominant value={search} onChange={(value)=>setSearch(value)}/>
+                    <Input label='Pesquisa' dominant value={search} onChange={(value)=>handleSearch(value)}/>
                     <Button>
                         Pesquisar
                     </Button>
@@ -60,7 +68,7 @@ export default function Teams(){
                     loading?
                     <Loading />:
                     <div className="content">
-                        {teams.map((team)=>(
+                        {teams.filter((element)=>!element.hidden).map((team)=>(
                             <ItemCard 
                                 key={team.id} image={team.logo} name={team.name}
                                 onClick={()=>handleClickTeam(team)}/>

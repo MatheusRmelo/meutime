@@ -33,6 +33,10 @@ export default function Countries(){
             clearTimeout(timer);
         }
         timer = setTimeout(handleSearch, 500)
+
+        return () => {
+            clearTimeout(timer);
+        }
     }, [search]);
 
     useEffect(()=>{
@@ -84,7 +88,7 @@ export default function Countries(){
         <Container>
             <section className="countries-area">
                 <div className="header">
-                    <Input label='Pesquisa' dominant value={search} onChange={(value)=>setSearch(value)}/>
+                    <Input label='Pesquisa (mínimo 3 letras)' dominant value={search} onChange={(value)=>setSearch(value)}/>
                     <Button>
                         Pesquisar
                     </Button>

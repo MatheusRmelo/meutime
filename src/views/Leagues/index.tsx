@@ -12,7 +12,6 @@ import { AppState } from '../../store/type';
 import { useNavigate } from 'react-router-dom';
 import { updateLeague } from '../../store/actions';
 
-let timer:any;
 export default function Leagues(){
     const state = useSelector((state: AppState) => state);
     const dispatch: Dispatch<any> = useDispatch();
@@ -21,13 +20,6 @@ export default function Leagues(){
     const [search, setSearch] = useState("");
     const [leagues, setLeagues] = useState<ILeague[]>([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(()=>{
-        if(timer){
-            clearTimeout(timer);
-        }
-        timer = setTimeout(handleSearch, 500)
-    }, [search]);
 
     useEffect(()=>{
         if(state.country == null || state.season == null){
@@ -55,23 +47,19 @@ export default function Leagues(){
         navigate('/teams');
     }
 
-    const handleSearch = async () => {
-        setLoading(true);
-        try {
-            var client = new ClientAPI(state.key);
-            setLeagues(await client.searchLeague(state.country!, state.season!, search));
-        }catch(e){
-            navigate('/');
-        }finally{
-            setLoading(false);
-        }
+    const handleSearch = (value: string) => {
+        let newLeagues = leagues.map((element)=>{return {
+            ...element, hidden: value == "" ? false : !element.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+        }});
+        setLeagues(newLeagues);
+        setSearch(value);
     }
 
     return (
         <Container>
             <section className="countries-area">
                 <div className="header">
-                    <Input label='Pesquisa' dominant value={search} onChange={(value)=>setSearch(value)}/>
+                    <Input label='Pesquisa' dominant value={search} onChange={(value)=>handleSearch(value)}/>
                     <Button>
                         Pesquisar
                     </Button>
@@ -80,7 +68,7 @@ export default function Leagues(){
                     loading?
                     <Loading />:
                     <div className="content">
-                        {leagues.map((league)=>(
+                        {leagues.filter((element)=>!element.hidden).map((league)=>(
                             <LeagueCard 
                                 key={league.id} 
                                 league={league}
